@@ -1,34 +1,58 @@
 import React from 'react';
 import { FastingPlan } from '../types';
+import { CheckCircleIcon } from './icons/Icons';
 
 interface PlanSelectorProps {
   plans: FastingPlan[];
   selectedPlan: FastingPlan;
   onSelectPlan: (plan: FastingPlan) => void;
+  disabled?: boolean;
 }
 
-const PlanSelector: React.FC<PlanSelectorProps> = ({ plans, selectedPlan, onSelectPlan }) => {
+const PlanSelector: React.FC<PlanSelectorProps> = ({ plans, selectedPlan, onSelectPlan, disabled }) => {
   return (
-    <div className="w-full max-w-lg mx-auto mt-4 text-center">
-      <h3 className="text-lg font-semibold text-text-primary mb-3">Escolha seu Plano de Jejum</h3>
-      <div className="flex flex-wrap justify-center gap-2">
-        {plans.map((plan) => (
+    <div className="flex flex-col space-y-4">
+      {disabled && (
+         <div className="bg-brand-lavender/10 border border-brand-lavender/30 p-4 rounded-2xl text-sm text-brand-lavender-dark mb-2 text-center font-medium">
+            Encerre o jejum atual para mudar de plano.
+         </div>
+      )}
+      {plans.map((plan) => {
+        const isSelected = selectedPlan.name === plan.name;
+        return (
           <button
             key={plan.name}
-            onClick={() => onSelectPlan(plan)}
-            className={`px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary
-              ${selectedPlan.name === plan.name
-                ? 'bg-primary text-white shadow-md'
-                : 'bg-gray-200 text-text-secondary hover:bg-accent hover:text-primary'
-              }`}
+            onClick={() => !disabled && onSelectPlan(plan)}
+            disabled={disabled}
+            className={`relative w-full text-left p-6 rounded-3xl transition-all duration-300 border-2 
+              ${isSelected 
+                ? 'bg-white border-brand-pink shadow-soft-lavender' 
+                : 'bg-white border-transparent shadow-sm hover:shadow-md hover:border-gray-100'
+              }
+              ${disabled ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer active:scale-[0.98]'}
+            `}
           >
-            {plan.name}
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className={`font-bold text-xl ${isSelected ? 'text-brand-pink' : 'text-gray-700'}`}>
+                    {plan.name}
+                </h3>
+                <p className="text-sm font-medium text-brand-lavender mt-1">
+                   Meta: {plan.hours} horas
+                </p>
+              </div>
+              {isSelected && (
+                <div className="text-brand-pink">
+                    <CheckCircleIcon className="w-7 h-7 fill-current" />
+                </div>
+              )}
+            </div>
+            <p className="text-sm text-gray-500 mt-3 leading-relaxed">
+                {plan.description}
+            </p>
           </button>
-        ))}
-      </div>
-       <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg min-h-[60px]">
-        <p className="text-text-secondary">{selectedPlan.description}</p>
-      </div>
+        );
+      })}
     </div>
   );
 };

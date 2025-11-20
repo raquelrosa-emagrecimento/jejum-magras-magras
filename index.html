@@ -1,39 +1,52 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Jejum Magras Magras</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
             colors: {
-              'primary': '#1E3A8A', // A deep blue
-              'secondary': '#3B82F6', // A brighter blue
-              'accent': '#93C5FD', // A light blue
-              'background': '#F9FAFB', // Very light gray
-              'text-primary': '#1F2937', // Dark gray
-              'text-secondary': '#4B5563', // Medium gray
+              'brand-pink': '#F7C5CC', // Rosa Chá
+              'brand-lavender': '#C8B4E3', // Roxo Lavanda
+              'brand-lavender-dark': '#9684B5', // Versão mais escura para texto legível
+              'brand-dark': '#4A4A4A', // Cinza neutro para textos principais
+              'surface': '#FFFFFF',
+              'background': '#FFFFFF',
+            },
+            boxShadow: {
+              'soft-lavender': '0 10px 25px -5px rgba(200, 180, 227, 0.4)', // Sombra lavanda suave
+              'glow-pink': '0 0 20px rgba(247, 197, 204, 0.6)', // Brilho rosa
+            },
+            animation: {
+              'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             }
           }
         }
       }
     </script>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
-  }
-}
-</script>
-</head>
-  <body class="bg-background">
-    <div id="root"></div>
+    <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/"
+      }
+    }
+    </script>
+  </head>
+  <body class="bg-background text-brand-dark h-full overflow-hidden">
+    <div id="root" class="h-full"></div>
     <script type="module" src="./index.tsx"></script>
   </body>
 </html>

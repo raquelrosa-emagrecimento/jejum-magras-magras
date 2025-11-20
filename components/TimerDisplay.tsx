@@ -4,6 +4,7 @@ interface TimerDisplayProps {
   elapsedSeconds: number;
   totalSeconds: number;
   percentage: number;
+  isActive: boolean;
 }
 
 const formatTime = (totalSeconds: number): string => {
@@ -13,54 +14,64 @@ const formatTime = (totalSeconds: number): string => {
   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
-const TimerDisplay: React.FC<TimerDisplayProps> = ({ elapsedSeconds, percentage }) => {
-  const radius = 90;
-  const stroke = 10;
+const TimerDisplay: React.FC<TimerDisplayProps> = ({ elapsedSeconds, percentage, isActive }) => {
+  const radius = 120;
+  const stroke = 12;
   const normalizedRadius = radius - stroke * 2;
   const circumference = normalizedRadius * 2 * Math.PI;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   return (
-    <div className="relative flex items-center justify-center w-64 h-64 sm:w-72 sm:h-72 mx-auto">
+    <div className="relative flex items-center justify-center w-64 h-64 mx-auto my-4">
+      {/* Background glow effect when active */}
+      {isActive && (
+        <div className="absolute inset-0 bg-brand-pink/20 blur-3xl rounded-full animate-pulse-slow"></div>
+      )}
+
       <svg
         height="100%"
         width="100%"
-        viewBox="0 0 200 200"
-        className="transform -rotate-90"
+        viewBox="0 0 240 240"
+        className="transform -rotate-90 relative z-10"
       >
+        {/* Track Circle */}
         <circle
-          stroke="#E5E7EB"
+          stroke="#F3F4F6" // Um cinza muito leve para o fundo do track
           fill="transparent"
           strokeWidth={stroke}
           r={normalizedRadius}
-          cx={radius + stroke}
-          cy={radius + stroke}
+          cx={radius}
+          cy={radius}
+          strokeLinecap="round"
         />
+        {/* Progress Circle */}
         <circle
           stroke="url(#gradient)"
           fill="transparent"
           strokeWidth={stroke}
           strokeDasharray={circumference + ' ' + circumference}
-          style={{ strokeDashoffset, strokeLinecap: 'round' }}
+          style={{ strokeDashoffset, transition: 'stroke-dashoffset 1s linear' }}
+          strokeLinecap="round"
           r={normalizedRadius}
-          cx={radius + stroke}
-          cy={radius + stroke}
-          className="transition-all duration-1000 ease-linear"
+          cx={radius}
+          cy={radius}
         />
         <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stopColor="#3B82F6" />
-            <stop offset="100%" stopColor="#1E3A8A" />
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            {/* Rosa Chá Suave */}
+            <stop offset="0%" stopColor="#F7C5CC" />
+            <stop offset="100%" stopColor="#F7C5CC" />
           </linearGradient>
         </defs>
       </svg>
-      <div className="absolute flex flex-col items-center justify-center text-center">
-        <span className="text-4xl sm:text-5xl font-bold text-primary tracking-tighter">
+      
+      <div className="absolute flex flex-col items-center justify-center text-center z-20">
+        {/* Números em Lavanda - Reduzido para text-4xl para melhor proporção */}
+        <span className={`text-4xl font-bold tracking-tighter tabular-nums ${isActive ? 'text-brand-lavender' : 'text-gray-300'}`}>
           {formatTime(elapsedSeconds)}
         </span>
-        <span className="text-lg text-text-secondary mt-1">Tempo Decorrido</span>
-        <span className="text-2xl font-semibold text-secondary mt-2">
-          {percentage.toFixed(1)}%
+        <span className="text-xs text-gray-400 font-medium mt-2 uppercase tracking-widest text-[10px]">
+          {isActive ? 'Tempo Decorrido' : 'Aguardando'}
         </span>
       </div>
     </div>
