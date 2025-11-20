@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { FastingPlan, CompletedFast, ActiveFast } from './types';
 import { FASTING_PLANS } from './constants';
@@ -78,8 +77,8 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-text-primary font-sans flex flex-col items-center p-4 sm:p-6 md:p-8">
       <header className="text-center mb-6">
-        <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">Fasting Tracker</h1>
-        <p className="text-text-secondary mt-2 text-lg">Your companion for intermittent fasting.</p>
+        <h1 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">Jejum Magras Magras</h1>
+        <p className="text-text-secondary mt-2 text-lg">Seu companheiro para o jejum intermitente.</p>
       </header>
       
       <main className="w-full max-w-4xl mx-auto flex flex-col items-center">
@@ -94,14 +93,14 @@ const App: React.FC = () => {
               <div className="flex items-center justify-center space-x-2 text-text-secondary">
                   <PlayIcon className="w-6 h-6 text-green-500" />
                   <div>
-                      <p className="font-semibold">Start Time</p>
+                      <p className="font-semibold">Hora de Início</p>
                       <p>{startTime ? startTime.toLocaleString() : 'N/A'}</p>
                   </div>
               </div>
               <div className="flex items-center justify-center space-x-2 text-text-secondary">
                   <FlagIcon className="w-6 h-6 text-red-500" />
                   <div>
-                      <p className="font-semibold">End Time</p>
+                      <p className="font-semibold">Hora de Fim</p>
                       <p>{endTime ? endTime.toLocaleString() : 'N/A'}</p>
                   </div>
               </div>
@@ -119,12 +118,12 @@ const App: React.FC = () => {
             {activeFast ? (
               <button onClick={handleEndFast} className="flex items-center justify-center w-full max-w-xs px-8 py-4 bg-red-600 text-white font-bold rounded-full shadow-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 text-xl">
                 <StopIcon className="w-7 h-7 mr-3" />
-                End Fast
+                Terminar Jejum
               </button>
             ) : (
               <button onClick={handleStartFast} className="flex items-center justify-center w-full max-w-xs px-8 py-4 bg-primary text-white font-bold rounded-full shadow-lg hover:bg-blue-900 transition-all duration-300 transform hover:scale-105 text-xl">
                  <PlayIcon className="w-7 h-7 mr-3" />
-                 Start Fast
+                 Começar Jejum
               </button>
             )}
           </div>
@@ -134,7 +133,7 @@ const App: React.FC = () => {
       </main>
 
       <footer className="w-full max-w-4xl mx-auto text-center mt-8 text-text-secondary text-sm">
-        <p>&copy; {new Date().getFullYear()} Fasting Tracker. Stay healthy and mindful.</p>
+        <p>&copy; {new Date().getFullYear()} Jejum Magras Magras. Mantenha-se saudável e consciente.</p>
       </footer>
     </div>
   );

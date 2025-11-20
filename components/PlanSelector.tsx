@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { FastingPlan } from '../types';
 
@@ -11,7 +10,7 @@ interface PlanSelectorProps {
 const PlanSelector: React.FC<PlanSelectorProps> = ({ plans, selectedPlan, onSelectPlan }) => {
   return (
     <div className="w-full max-w-lg mx-auto mt-4 text-center">
-      <h3 className="text-lg font-semibold text-text-primary mb-3">Choose Your Fasting Plan</h3>
+      <h3 className="text-lg font-semibold text-text-primary mb-3">Escolha seu Plano de Jejum</h3>
       <div className="flex flex-wrap justify-center gap-2">
         {plans.map((plan) => (
           <button

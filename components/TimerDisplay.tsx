@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface TimerDisplayProps {
@@ -59,7 +58,7 @@ const TimerDisplay: React.FC<TimerDisplayProps> = ({ elapsedSeconds, percentage 
         <span className="text-4xl sm:text-5xl font-bold text-primary tracking-tighter">
           {formatTime(elapsedSeconds)}
         </span>
-        <span className="text-lg text-text-secondary mt-1">Elapsed Time</span>
+        <span className="text-lg text-text-secondary mt-1">Tempo Decorrido</span>
         <span className="text-2xl font-semibold text-secondary mt-2">
           {percentage.toFixed(1)}%
         </span>
