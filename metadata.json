@@ -1,0 +1,5 @@
+{
+  "name": "Fasting Tracker",
+  "description": "A simple and elegant application to track your fasting periods, monitor progress, and view your history. Choose from popular fasting plans or set your own custom duration.",
+  "requestFramePermissions": []
+}
