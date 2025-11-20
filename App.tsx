@@ -4,12 +4,13 @@ import { FastingPlan, CompletedFast, ActiveFast } from './types';
 import { FASTING_PLANS } from './constants';
 import TimerDisplay from './components/TimerDisplay';
 import PlanSelector from './components/PlanSelector';
-import HistoryLog from './components/HistoryLog';
 import MetabolicStatus from './components/MetabolicStatus';
 import TimelineGuide from './components/TimelineGuide';
-import { PlayIcon, StopIcon, HomeIcon, ClockHistoryIcon, XMarkIcon, ChevronRightIcon } from './components/icons/Icons';
+import JournalSession from './components/JournalSession';
+import DashboardSession from './components/DashboardSession';
+import { PlayIcon, StopIcon, HomeIcon, XMarkIcon, ChevronRightIcon, JournalIcon, UserCircleIcon } from './components/icons/Icons';
 
-type Tab = 'timer' | 'history';
+type Tab = 'timer' | 'journal' | 'dashboard';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('timer');
@@ -167,13 +168,10 @@ const App: React.FC = () => {
              </div>
           </div>
         );
-      case 'history':
-        return (
-          <div className="h-full overflow-y-auto pb-24 pt-8 px-4">
-            <h2 className="text-2xl font-bold text-brand-lavender-dark mb-6 px-2 text-center">Seu Progresso</h2>
-            <HistoryLog history={history} />
-          </div>
-        );
+      case 'journal':
+        return <JournalSession />;
+      case 'dashboard':
+        return <DashboardSession history={history} />;
     }
   };
 
@@ -219,24 +217,30 @@ const App: React.FC = () => {
       </main>
 
       {/* Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 w-full bg-white border-t border-gray-50 pb-safe pt-3 px-12 shadow-[0_-4px_25px_rgba(200,180,227,0.15)] z-40 h-24 rounded-t-3xl">
-        <div className="flex justify-between items-center h-full pb-4">
+      <nav className="fixed bottom-0 w-full bg-white border-t border-gray-50 pb-safe pt-3 px-4 shadow-[0_-4px_25px_rgba(200,180,227,0.15)] z-40 h-24 rounded-t-3xl">
+        <div className="flex justify-between items-center h-full pb-4 max-w-sm mx-auto px-4">
           <button 
             onClick={() => setActiveTab('timer')}
-            className={`flex flex-col items-center gap-1.5 p-2 transition-colors flex-1 ${activeTab === 'timer' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+            className={`flex flex-col items-center gap-1 p-2 transition-colors w-16 ${activeTab === 'timer' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
           >
             <HomeIcon className={`w-7 h-7 ${activeTab === 'timer' ? 'fill-brand-lavender/20 stroke-brand-lavender-dark' : 'stroke-current'}`} />
-            <span className="text-xs font-medium">Início</span>
+            <span className="text-[10px] font-bold">Início</span>
           </button>
 
-          <div className="w-px h-8 bg-gray-100 mx-4"></div>
+          <button 
+            onClick={() => setActiveTab('journal')}
+            className={`flex flex-col items-center gap-1 p-2 transition-colors w-16 ${activeTab === 'journal' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+          >
+             <JournalIcon className={`w-7 h-7 ${activeTab === 'journal' ? 'fill-brand-lavender/20 stroke-brand-lavender-dark' : 'stroke-current'}`} />
+             <span className="text-[10px] font-bold">Diário</span>
+          </button>
 
           <button 
-            onClick={() => setActiveTab('history')}
-            className={`flex flex-col items-center gap-1.5 p-2 transition-colors flex-1 ${activeTab === 'history' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+            onClick={() => setActiveTab('dashboard')}
+            className={`flex flex-col items-center gap-1 p-2 transition-colors w-16 ${activeTab === 'dashboard' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
           >
-            <ClockHistoryIcon className={`w-7 h-7 ${activeTab === 'history' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
-            <span className="text-xs font-medium">Histórico</span>
+            <UserCircleIcon className={`w-7 h-7 ${activeTab === 'dashboard' ? 'fill-brand-lavender/20 stroke-brand-lavender-dark' : 'stroke-current'}`} />
+            <span className="text-[10px] font-bold">Painel</span>
           </button>
         </div>
       </nav>

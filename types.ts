@@ -21,3 +21,23 @@ export interface TimelineEvent {
   description: string;
   benefits: string[];
 }
+
+export interface BodyMeasurements {
+  chest?: number;
+  waist?: number;
+  hips?: number;
+  thigh?: number;
+}
+
+export interface BloodLevels {
+  ketones?: number;
+  glucose?: number;
+}
+
+export interface DailyLog {
+  date: string; // YYYY-MM-DD format
+  waterIntake?: number; // in ml or glasses
+  weight?: number;
+  measurements?: BodyMeasurements;
+  bloodLevels?: BloodLevels;
+}

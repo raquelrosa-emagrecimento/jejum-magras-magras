@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { METABOLIC_TIMELINE } from '../constants';
+import { InstagramIcon } from './icons/Icons';
 
 interface TimelineGuideProps {
   elapsedSeconds: number;
@@ -92,9 +93,17 @@ const TimelineGuide: React.FC<TimelineGuideProps> = ({ elapsedSeconds, isActive 
       </div>
       
       {!isActive && (
-          <p className="text-center text-gray-400 text-xs mt-8 italic">
-              Inicie um jejum para acompanhar seu progresso nestas fases.
-          </p>
+          <div className="mt-12 px-2">
+              <a 
+                href="https://www.instagram.com/raquelrosa.emagrecimento/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-brand-lavender to-brand-pink text-white py-4 rounded-2xl shadow-lg shadow-brand-pink/30 hover:shadow-xl hover:scale-[1.02] transition-all active:scale-95"
+              >
+                 <InstagramIcon className="w-6 h-6" />
+                 <span className="font-bold text-sm sm:text-base">Siga @raquelrosa.emagrecimento</span>
+              </a>
+          </div>
       )}
     </div>
   );
