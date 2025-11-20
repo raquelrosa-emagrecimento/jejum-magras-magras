@@ -2,11 +2,13 @@
 import { FastingPlan, TimelineEvent } from './types';
 
 export const FASTING_PLANS: FastingPlan[] = [
-  { name: '16:8', hours: 16, description: 'Jejum de 16 horas, com uma janela de alimentação de 8 horas. Ótimo para iniciantes.' },
-  { name: '18:6', hours: 18, description: 'Jejum de 18 horas, com uma janela de alimentação de 6 horas. Um passo adiante.' },
-  { name: '20:4', hours: 20, description: 'Jejum de 20 horas, com uma janela de alimentação de 4 horas. Mais avançado.' },
-  { name: 'OMAD', hours: 23, description: 'Uma Refeição Por Dia. Jejum por 23 horas.' },
-  { name: '36 Horas', hours: 36, description: 'Um dia inteiro de jejum. Consulte um médico antes de tentar.' },
+  { name: '12 Horas', hours: 12, description: 'Janela de 12h. O ponto de partida ideal para se acostumar com o jejum.' },
+  { name: '14 Horas', hours: 14, description: 'Aumenta a queima de gordura e começa a melhorar a sensibilidade à insulina.' },
+  { name: '16 Horas', hours: 16, description: 'O popular 16:8. Ideal para perda de peso e controle metabólico diário.' },
+  { name: '18 Horas', hours: 18, description: 'Jejum mais profundo. Aumenta a autofagia e reduz inflamações.' },
+  { name: '20 Horas', hours: 20, description: 'Dieta do Guerreiro. Janela curta de alimentação para foco mental intenso.' },
+  { name: '22 Horas', hours: 22, description: 'Quase um dia completo (OMAD). Maximize a queima de gordura.' },
+  { name: '24 Horas', hours: 24, description: 'Jejum de dia inteiro. Reset completo do sistema digestivo.' },
 ];
 
 export const METABOLIC_TIMELINE: TimelineEvent[] = [

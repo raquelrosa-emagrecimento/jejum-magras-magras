@@ -7,14 +7,14 @@ import PlanSelector from './components/PlanSelector';
 import HistoryLog from './components/HistoryLog';
 import MetabolicStatus from './components/MetabolicStatus';
 import TimelineGuide from './components/TimelineGuide';
-import { PlayIcon, StopIcon, HomeIcon, ClockHistoryIcon, XMarkIcon } from './components/icons/Icons';
+import { PlayIcon, StopIcon, HomeIcon, ClockHistoryIcon, XMarkIcon, ChevronRightIcon } from './components/icons/Icons';
 
 type Tab = 'timer' | 'history';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('timer');
   const [showPlanModal, setShowPlanModal] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<FastingPlan>(FASTING_PLANS[0]);
+  const [selectedPlan, setSelectedPlan] = useState<FastingPlan>(FASTING_PLANS[2]); // Default to 16h (index 2)
   const [activeFast, setActiveFast] = useState<ActiveFast | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const [history, setHistory] = useState<CompletedFast[]>([]);
@@ -124,16 +124,26 @@ const App: React.FC = () => {
                           </button>
                         </div>
                       ) : (
-                        <div className="flex flex-col gap-3">
-                           <div className="text-center mb-4">
-                            <p className="text-sm text-gray-400 uppercase tracking-wider font-medium">Plano Selecionado</p>
-                            <button 
-                              onClick={() => setShowPlanModal(true)} 
-                              className="font-bold text-brand-pink text-lg underline decoration-dotted decoration-2 underline-offset-4 hover:text-brand-pink/80 active:scale-95 transition-transform"
-                            >
-                              {selectedPlan.name} ({selectedPlan.hours}h)
-                            </button>
-                          </div>
+                        <div className="flex flex-col gap-4">
+                           {/* New Plan Selection Bar */}
+                           <div className="w-full">
+                              <p className="text-xs text-gray-400 uppercase tracking-wider font-medium mb-2 ml-1">Selecione seu Plano</p>
+                              <button 
+                                onClick={() => setShowPlanModal(true)} 
+                                className="w-full bg-gray-50 hover:bg-gray-100 active:bg-gray-200 p-4 rounded-2xl flex items-center justify-between transition-colors group border border-gray-100"
+                              >
+                                <div className="flex flex-col items-start">
+                                   <span className="font-bold text-brand-lavender-dark text-lg group-hover:text-brand-pink transition-colors">
+                                      {selectedPlan.name}
+                                   </span>
+                                   <span className="text-xs text-gray-400 font-medium">{selectedPlan.hours} horas de jejum</span>
+                                </div>
+                                <div className="bg-white p-2 rounded-full shadow-sm group-hover:bg-brand-pink group-hover:text-white transition-all">
+                                   <ChevronRightIcon className="w-5 h-5 text-brand-lavender-dark group-hover:text-white" />
+                                </div>
+                              </button>
+                           </div>
+
                           <button 
                             onClick={handleStartFast}
                             className="w-full py-4 bg-brand-pink text-white rounded-2xl font-bold text-lg shadow-lg shadow-brand-pink/40 hover:brightness-95 transition-all flex items-center justify-center gap-2 active:scale-95"
@@ -183,7 +193,7 @@ const App: React.FC = () => {
                  <div className="flex justify-between items-center mb-6 px-2">
                     <div>
                         <h2 className="text-2xl font-bold text-brand-dark">Escolha seu Plano</h2>
-                        <p className="text-brand-lavender-dark text-sm font-medium">Toque para selecionar</p>
+                        <p className="text-brand-lavender-dark text-sm font-medium">Qual sua meta para hoje?</p>
                     </div>
                     <button 
                       onClick={() => setShowPlanModal(false)}
