@@ -14,3 +14,10 @@ export interface CompletedFast extends ActiveFast {
   endTime: string;
   durationSeconds: number;
 }
+
+export interface TimelineEvent {
+  hour: number;
+  title: string;
+  description: string;
+  benefits: string[];
+}

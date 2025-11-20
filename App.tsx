@@ -1,15 +1,19 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { FastingPlan, CompletedFast, ActiveFast } from './types';
 import { FASTING_PLANS } from './constants';
 import TimerDisplay from './components/TimerDisplay';
 import PlanSelector from './components/PlanSelector';
 import HistoryLog from './components/HistoryLog';
-import { PlayIcon, StopIcon, HomeIcon, ListIcon, ClockHistoryIcon } from './components/icons/Icons';
+import MetabolicStatus from './components/MetabolicStatus';
+import TimelineGuide from './components/TimelineGuide';
+import { PlayIcon, StopIcon, HomeIcon, ClockHistoryIcon, XMarkIcon } from './components/icons/Icons';
 
-type Tab = 'timer' | 'plans' | 'history';
+type Tab = 'timer' | 'history';
 
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>('timer');
+  const [showPlanModal, setShowPlanModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<FastingPlan>(FASTING_PLANS[0]);
   const [activeFast, setActiveFast] = useState<ActiveFast | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
@@ -79,7 +83,6 @@ const App: React.FC = () => {
 
   const handlePlanSelect = (plan: FastingPlan) => {
     setSelectedPlan(plan);
-    // Don't switch tab immediately, let user see selection
   };
 
   const totalDurationSeconds = (activeFast?.plan.hours ?? selectedPlan.hours) * 3600;
@@ -89,11 +92,12 @@ const App: React.FC = () => {
     switch (activeTab) {
       case 'timer':
         return (
-          <div className="flex flex-col items-center justify-center h-full pb-20">
-             <div className="w-full max-w-md px-6">
+          <div className="h-full overflow-y-auto pb-24 pt-6 px-4 scroll-smooth">
+             <div className="w-full max-w-md mx-auto">
+                {/* Main Timer Card */}
                 <div className="bg-white rounded-[2rem] shadow-soft-lavender p-8 flex flex-col items-center relative overflow-hidden border border-brand-lavender/20">
                    
-                   <h2 className="text-xl font-medium text-brand-lavender-dark mb-6 tracking-tight">
+                   <h2 className="text-xl font-medium text-brand-lavender-dark mb-6 tracking-tight text-center">
                      {activeFast ? 'Jejum em Andamento' : 'Magras Magras, vamos jejuar?'}
                    </h2>
 
@@ -104,7 +108,7 @@ const App: React.FC = () => {
                     isActive={!!activeFast}
                    />
 
-                   <div className="mt-10 w-full">
+                   <div className="mt-8 w-full">
                       {activeFast ? (
                         <div className="flex flex-col gap-3">
                           <div className="text-center mb-4">
@@ -123,7 +127,10 @@ const App: React.FC = () => {
                         <div className="flex flex-col gap-3">
                            <div className="text-center mb-4">
                             <p className="text-sm text-gray-400 uppercase tracking-wider font-medium">Plano Selecionado</p>
-                            <button onClick={() => setActiveTab('plans')} className="font-bold text-brand-pink text-lg underline decoration-dotted decoration-2 underline-offset-4 hover:text-brand-pink/80">
+                            <button 
+                              onClick={() => setShowPlanModal(true)} 
+                              className="font-bold text-brand-pink text-lg underline decoration-dotted decoration-2 underline-offset-4 hover:text-brand-pink/80 active:scale-95 transition-transform"
+                            >
                               {selectedPlan.name} ({selectedPlan.hours}h)
                             </button>
                           </div>
@@ -138,19 +145,16 @@ const App: React.FC = () => {
                       )}
                    </div>
                 </div>
+
+                {/* Metabolic Status - Current Phase (Only if active) */}
+                {activeFast && (
+                   <MetabolicStatus elapsedSeconds={elapsedSeconds} />
+                )}
+
+                {/* Full Timeline Guide (Always visible as reference or progress tracker) */}
+                <TimelineGuide elapsedSeconds={elapsedSeconds} isActive={!!activeFast} />
+                
              </div>
-          </div>
-        );
-      case 'plans':
-        return (
-          <div className="h-full overflow-y-auto pb-24 pt-8 px-4">
-             <h2 className="text-2xl font-bold text-brand-lavender-dark mb-6 px-2 text-center">Planos de Jejum</h2>
-             <PlanSelector
-                plans={FASTING_PLANS}
-                selectedPlan={activeFast ? activeFast.plan : selectedPlan}
-                onSelectPlan={handlePlanSelect}
-                disabled={!!activeFast}
-              />
           </div>
         );
       case 'history':
@@ -168,30 +172,58 @@ const App: React.FC = () => {
       {/* Main Content Area */}
       <main className="flex-1 relative overflow-hidden">
         {renderContent()}
+
+        {/* Plan Selection Modal */}
+        {showPlanModal && (
+           <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/20 backdrop-blur-sm p-0 sm:p-4 animate-in fade-in duration-200">
+              {/* Overlay click to close */}
+              <div className="absolute inset-0" onClick={() => setShowPlanModal(false)}></div>
+              
+              <div className="bg-white w-full max-w-md rounded-t-[2.5rem] sm:rounded-3xl p-6 pt-8 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] animate-in slide-in-from-bottom-full duration-300 relative max-h-[85vh] overflow-y-auto">
+                 <div className="flex justify-between items-center mb-6 px-2">
+                    <div>
+                        <h2 className="text-2xl font-bold text-brand-dark">Escolha seu Plano</h2>
+                        <p className="text-brand-lavender-dark text-sm font-medium">Toque para selecionar</p>
+                    </div>
+                    <button 
+                      onClick={() => setShowPlanModal(false)}
+                      className="p-2 bg-gray-50 rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors"
+                    >
+                      <XMarkIcon className="w-6 h-6" />
+                    </button>
+                 </div>
+                 
+                 <PlanSelector
+                    plans={FASTING_PLANS}
+                    selectedPlan={activeFast ? activeFast.plan : selectedPlan}
+                    onSelectPlan={(plan) => {
+                        handlePlanSelect(plan);
+                        setShowPlanModal(false);
+                    }}
+                    disabled={!!activeFast}
+                  />
+                  <div className="h-8"></div> {/* Spacing at bottom */}
+              </div>
+           </div>
+        )}
       </main>
 
       {/* Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 w-full bg-white border-t border-gray-50 pb-safe pt-3 px-6 shadow-[0_-4px_25px_rgba(200,180,227,0.15)] z-50 h-24 rounded-t-3xl">
-        <div className="flex justify-around items-center h-full pb-4">
+      <nav className="fixed bottom-0 w-full bg-white border-t border-gray-50 pb-safe pt-3 px-12 shadow-[0_-4px_25px_rgba(200,180,227,0.15)] z-40 h-24 rounded-t-3xl">
+        <div className="flex justify-between items-center h-full pb-4">
           <button 
             onClick={() => setActiveTab('timer')}
-            className={`flex flex-col items-center gap-1.5 p-2 transition-colors ${activeTab === 'timer' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+            className={`flex flex-col items-center gap-1.5 p-2 transition-colors flex-1 ${activeTab === 'timer' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
           >
             <HomeIcon className={`w-7 h-7 ${activeTab === 'timer' ? 'fill-brand-lavender/20 stroke-brand-lavender-dark' : 'stroke-current'}`} />
             <span className="text-xs font-medium">Início</span>
           </button>
 
-          <button 
-            onClick={() => setActiveTab('plans')}
-            className={`flex flex-col items-center gap-1.5 p-2 transition-colors ${activeTab === 'plans' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
-          >
-            <ListIcon className={`w-7 h-7 ${activeTab === 'plans' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
-            <span className="text-xs font-medium">Planos</span>
-          </button>
+          <div className="w-px h-8 bg-gray-100 mx-4"></div>
 
           <button 
             onClick={() => setActiveTab('history')}
-            className={`flex flex-col items-center gap-1.5 p-2 transition-colors ${activeTab === 'history' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+            className={`flex flex-col items-center gap-1.5 p-2 transition-colors flex-1 ${activeTab === 'history' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
           >
             <ClockHistoryIcon className={`w-7 h-7 ${activeTab === 'history' ? 'stroke-[2.5px]' : 'stroke-2'}`} />
             <span className="text-xs font-medium">Histórico</span>
