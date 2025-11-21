@@ -92,13 +92,25 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
 
         // @ts-ignore
         const canvas = await window.html2canvas(cardRef.current, {
-            scale: 2, // Melhor qualidade (Retina)
-            backgroundColor: null, // Transparência
+            scale: 3, // Alta qualidade
+            backgroundColor: '#FFFFFF', // FUNDO BRANCO FORÇADO
             logging: false,
             useCORS: true,
             // Ignora os botões na hora da foto para ficar um card limpo
             ignoreElements: (element: Element) => {
                 return element.classList.contains('share-ignore');
+            },
+            onclone: (clonedDoc: Document) => {
+                // Torna o rodapé visível APENAS na imagem gerada
+                const footer = clonedDoc.querySelector('.share-footer');
+                if (footer) {
+                    const el = footer as HTMLElement;
+                    el.style.height = 'auto';
+                    el.style.opacity = '1';
+                    el.style.transform = 'scale(1)';
+                    el.style.marginTop = '24px';
+                    el.style.display = 'block';
+                }
             }
         });
 
@@ -147,17 +159,12 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
       >
         
         {/* Background Effects */}
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-brand-pink/20 to-transparent rounded-t-[2.5rem]"></div>
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-lavender/20 rounded-full blur-3xl"></div>
-        <div className="absolute top-20 -left-10 w-32 h-32 bg-brand-pink/20 rounded-full blur-3xl"></div>
-
-        {/* Logo Watermark (aparece sutilmente na imagem) */}
-        <div className="absolute bottom-4 right-0 left-0 text-center opacity-0 scale-0 h-0 overflow-hidden" style={{ opacity: 0 }}>
-             <p className="text-xs text-gray-400 font-bold uppercase tracking-widest">App Jejum Magras Magras</p>
-        </div>
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-brand-pink/20 to-transparent rounded-t-[2.5rem] pointer-events-none"></div>
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-lavender/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-20 -left-10 w-32 h-32 bg-brand-pink/20 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Icon */}
-        <div className="relative mb-6 mt-4">
+        <div className="relative mb-6 mt-4 z-10">
             <div className="w-24 h-24 bg-gradient-to-br from-brand-pink to-brand-lavender rounded-full flex items-center justify-center shadow-lg shadow-brand-pink/40 animate-pulse-slow">
                 <TrophyIcon className="w-12 h-12 text-white" />
             </div>
@@ -179,8 +186,7 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
 
         {/* 
            A classe 'share-ignore' é usada na função handleShare para dizer ao html2canvas 
-           para NÃO incluir esta div na imagem gerada. Assim, o print sai limpo, 
-           sem os botões. 
+           para NÃO incluir esta div na imagem gerada. Assim, o print sai limpo.
         */}
         <div className="flex flex-col gap-3 w-full relative z-10 share-ignore">
             <button 
@@ -206,9 +212,10 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
             </button>
         </div>
         
-        {/* Rodapé visível apenas na imagem gerada (hack de altura para layout) */}
-        <div className="h-0 overflow-hidden w-full">
-             <p className="text-brand-lavender font-bold text-sm mt-4">#JejumMagrasMagras</p>
+        {/* Rodapé visível apenas na imagem gerada (controlado via onclone) */}
+        <div className="share-footer h-0 opacity-0 overflow-hidden w-full scale-0">
+             <p className="text-brand-lavender font-bold text-sm text-center">#JejumMagrasMagras</p>
+             <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1 text-center">App Jejum Magras Magras</p>
         </div>
 
       </div>
