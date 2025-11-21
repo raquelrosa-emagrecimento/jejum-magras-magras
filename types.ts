@@ -34,10 +34,17 @@ export interface BloodLevels {
   glucose?: number;
 }
 
+export interface Electrolytes {
+  sodium?: number;
+  potassium?: number;
+  magnesium?: number;
+}
+
 export interface DailyLog {
   date: string; // YYYY-MM-DD format
   waterIntake?: number; // in ml or glasses
   weight?: number;
   measurements?: BodyMeasurements;
   bloodLevels?: BloodLevels;
+  electrolytes?: Electrolytes;
 }
