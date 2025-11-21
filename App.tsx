@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { FastingPlan, CompletedFast, ActiveFast } from './types';
+import { FastingPlan, CompletedFast, ActiveFast, User } from './types';
 import { FASTING_PLANS } from './constants';
 import TimerDisplay from './components/TimerDisplay';
 import PlanSelector from './components/PlanSelector';
@@ -9,11 +9,13 @@ import TimelineGuide from './components/TimelineGuide';
 import JournalSession from './components/JournalSession';
 import DashboardSession from './components/DashboardSession';
 import FastCompletionModal from './components/FastCompletionModal';
+import AuthScreen from './components/AuthScreen';
 import { PlayIcon, StopIcon, HomeIcon, XMarkIcon, ChevronRightIcon, JournalIcon, UserCircleIcon } from './components/icons/Icons';
 
 type Tab = 'timer' | 'journal' | 'dashboard';
 
 const App: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
   const [activeTab, setActiveTab] = useState<Tab>('timer');
   const [showPlanModal, setShowPlanModal] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<FastingPlan>(FASTING_PLANS[2]); // Default to 16h (index 2)
@@ -28,6 +30,9 @@ const App: React.FC = () => {
   // Load data
   useEffect(() => {
     try {
+      const savedUser = localStorage.getItem('userProfile');
+      if (savedUser) setUser(JSON.parse(savedUser));
+
       const savedHistory = localStorage.getItem('fastingHistory');
       if (savedHistory) setHistory(JSON.parse(savedHistory));
       
@@ -43,6 +48,17 @@ const App: React.FC = () => {
       console.error("Erro ao carregar dados", error);
     }
   }, []);
+
+  // Auth Handlers
+  const handleLogin = (newUser: User) => {
+    setUser(newUser);
+    localStorage.setItem('userProfile', JSON.stringify(newUser));
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem('userProfile');
+  };
 
   // Timer logic
   useEffect(() => {
@@ -181,9 +197,14 @@ const App: React.FC = () => {
       case 'journal':
         return <JournalSession />;
       case 'dashboard':
-        return <DashboardSession history={history} />;
+        return <DashboardSession history={history} user={user} onLogout={handleLogout} />;
     }
   };
+
+  // If not logged in, show auth screen
+  if (!user) {
+    return <AuthScreen onLogin={handleLogin} />;
+  }
 
   return (
     <div className="h-full flex flex-col bg-white font-sans">

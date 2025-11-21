@@ -1,10 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
-import { CompletedFast, DailyLog } from '../types';
-import { UserCircleIcon, DropIcon, ScaleIcon, RulerIcon, BoltIcon, ChevronRightIcon } from './icons/Icons';
+import { CompletedFast, DailyLog, User } from '../types';
+import { UserCircleIcon, DropIcon, ScaleIcon, RulerIcon, BoltIcon, ChevronRightIcon, LogoutIcon } from './icons/Icons';
 
 interface DashboardSessionProps {
   history: CompletedFast[];
+  user: User | null;
+  onLogout: () => void;
 }
 
 // --- Chart Components ---
@@ -180,7 +182,7 @@ const DashboardChart: React.FC<DashboardChartProps> = ({ title, icon, unit, data
 }
 
 
-const DashboardSession: React.FC<DashboardSessionProps> = ({ history }) => {
+const DashboardSession: React.FC<DashboardSessionProps> = ({ history, user, onLogout }) => {
   const [journalLogs, setJournalLogs] = useState<Record<string, DailyLog>>({});
 
   useEffect(() => {
@@ -237,11 +239,21 @@ const DashboardSession: React.FC<DashboardSessionProps> = ({ history }) => {
 
   return (
     <div className="h-full overflow-y-auto pb-24 pt-4 px-4 scroll-smooth bg-white">
+      {/* Header with User Profile & Logout */}
       <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-brand-lavender-dark">Painel</h2>
-          <div className="p-2 bg-brand-lavender/10 rounded-full text-brand-lavender">
-              <UserCircleIcon className="w-6 h-6" />
+          <div>
+            <h2 className="text-2xl font-bold text-brand-lavender-dark">Painel</h2>
+            {user && (
+              <p className="text-sm text-gray-500 font-medium">Olá, {user.name}!</p>
+            )}
           </div>
+          <button 
+            onClick={onLogout}
+            className="p-2 bg-gray-50 hover:bg-red-50 rounded-full text-gray-400 hover:text-red-400 transition-colors"
+            title="Sair"
+          >
+              <LogoutIcon className="w-6 h-6" />
+          </button>
       </div>
 
       {/* Stats Grid */}

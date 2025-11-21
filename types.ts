@@ -48,3 +48,8 @@ export interface DailyLog {
   bloodLevels?: BloodLevels;
   electrolytes?: Electrolytes;
 }
+
+export interface User {
+  name: string;
+  email: string;
+}
