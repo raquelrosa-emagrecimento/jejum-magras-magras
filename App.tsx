@@ -8,6 +8,7 @@ import MetabolicStatus from './components/MetabolicStatus';
 import TimelineGuide from './components/TimelineGuide';
 import JournalSession from './components/JournalSession';
 import DashboardSession from './components/DashboardSession';
+import FastCompletionModal from './components/FastCompletionModal';
 import { PlayIcon, StopIcon, HomeIcon, XMarkIcon, ChevronRightIcon, JournalIcon, UserCircleIcon } from './components/icons/Icons';
 
 type Tab = 'timer' | 'journal' | 'dashboard';
@@ -19,6 +20,10 @@ const App: React.FC = () => {
   const [activeFast, setActiveFast] = useState<ActiveFast | null>(null);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const [history, setHistory] = useState<CompletedFast[]>([]);
+  
+  // New State for Completion Modal
+  const [showCompletionModal, setShowCompletionModal] = useState(false);
+  const [lastCompletedFast, setLastCompletedFast] = useState<CompletedFast | null>(null);
 
   // Load data
   useEffect(() => {
@@ -77,6 +82,11 @@ const App: React.FC = () => {
     setHistory(newHistory);
     localStorage.setItem('fastingHistory', JSON.stringify(newHistory));
     
+    // Set completion state
+    setLastCompletedFast(completedFast);
+    setShowCompletionModal(true);
+
+    // Reset active state
     setActiveFast(null);
     setElapsedSeconds(0);
     localStorage.removeItem('activeFast');
@@ -213,6 +223,14 @@ const App: React.FC = () => {
                   <div className="h-8"></div> {/* Spacing at bottom */}
               </div>
            </div>
+        )}
+
+        {/* Fast Completion Modal */}
+        {showCompletionModal && lastCompletedFast && (
+            <FastCompletionModal 
+                fast={lastCompletedFast} 
+                onClose={() => setShowCompletionModal(false)} 
+            />
         )}
       </main>
 

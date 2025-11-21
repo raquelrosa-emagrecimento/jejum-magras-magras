@@ -55,3 +55,26 @@ export const METABOLIC_TIMELINE: TimelineEvent[] = [
     benefits: ["Redução acentuada de inchaço", "Mente clara", "Metabolismo eficiente"]
   }
 ];
+
+export const MOTIVATIONAL_QUOTES: string[] = [
+  "Mantenha-se focada para alcançar o objetivo que é ficar magra.",
+  "Você é mais forte do que a sua vontade de comer.",
+  "Cada hora de jejum é uma vitória brilhante para o seu corpo.",
+  "A disciplina de hoje é a liberdade e a leveza de amanhã.",
+  "Seu corpo é seu templo, cuide dele com carinho e respeito.",
+  "O sabor da vitória é infinitamente melhor que o sabor de qualquer comida momentânea.",
+  "Não troque o que você mais quer na vida pelo que você quer agora.",
+  "Você está no controle absoluto, não a comida.",
+  "Ame-se o suficiente para viver de forma saudável e plena.",
+  "O sucesso é a soma de pequenos esforços repetidos dia após dia.",
+  "Emagrecer é a única coisa que você perde e fica imensamente feliz!",
+  "Acredite: você está se transformando na sua melhor e mais linda versão.",
+  "Foco na meta, força na luta e fé na vitória.",
+  "Desistir não acelera o processo. Continue firme, magra e maravilhosa!",
+  "Se fosse fácil, todo mundo faria. Você é extraordinária.",
+  "Sinta orgulho de cada 'não' que você disse para a tentação.",
+  "A dor do sacrifício passa, a glória do resultado fica para sempre.",
+  "Você não chegou até aqui para parar agora. Continue brilhando.",
+  "Seu corpo agradece cada momento de descanso digestivo.",
+  "Magra, saudável e feliz: esse é o seu destino traçado."
+];
