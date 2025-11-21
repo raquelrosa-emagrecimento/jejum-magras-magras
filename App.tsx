@@ -250,6 +250,8 @@ const App: React.FC = () => {
         {showCompletionModal && lastCompletedFast && (
             <FastCompletionModal 
                 fast={lastCompletedFast} 
+                userName={user.name}
+                userPhoto={user.photo}
                 onClose={() => setShowCompletionModal(false)} 
             />
         )}

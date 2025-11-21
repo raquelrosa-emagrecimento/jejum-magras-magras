@@ -6,10 +6,12 @@ import { MOTIVATIONAL_QUOTES } from '../constants';
 
 interface FastCompletionModalProps {
   fast: CompletedFast;
+  userName?: string;
+  userPhoto?: string;
   onClose: () => void;
 }
 
-const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose }) => {
+const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, userName, userPhoto, onClose }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isSharing, setIsSharing] = useState(false);
   
@@ -182,17 +184,23 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
         <div className="absolute -top-10 -right-10 w-48 h-48 bg-purple-300 rounded-full blur-3xl pointer-events-none opacity-50"></div>
         <div className="absolute top-20 -left-10 w-40 h-40 bg-pink-300 rounded-full blur-3xl pointer-events-none opacity-50"></div>
 
-        {/* Icon */}
+        {/* Icon or User Photo */}
         <div className="relative mb-8 mt-4 z-10">
-            <div className="w-28 h-28 bg-gradient-to-br from-brand-pink to-brand-lavender rounded-full flex items-center justify-center shadow-xl shadow-brand-pink/50 animate-pulse-slow ring-8 ring-white">
-                <TrophyIcon className="w-14 h-14 text-white" />
+            <div className={`w-28 h-28 rounded-full flex items-center justify-center shadow-xl shadow-brand-pink/50 animate-pulse-slow ring-8 ring-white overflow-hidden ${!userPhoto ? 'bg-gradient-to-br from-brand-pink to-brand-lavender' : 'bg-white'}`}>
+                {userPhoto ? (
+                  <img src={userPhoto} alt="Foto do Usuário" className="w-full h-full object-cover" />
+                ) : (
+                  <TrophyIcon className="w-14 h-14 text-white" />
+                )}
             </div>
             <div className="absolute -bottom-3 -right-3 text-3xl filter drop-shadow-md">✨</div>
             <div className="absolute -top-2 -left-2 text-2xl filter drop-shadow-md">🎉</div>
         </div>
 
         {/* Texto PRETO e GROSSO */}
-        <h2 className="text-4xl font-black text-black mb-2 relative z-10 tracking-tight drop-shadow-sm">Parabéns!</h2>
+        <h2 className="text-3xl font-black text-black mb-2 relative z-10 tracking-tight drop-shadow-sm leading-tight">
+            Parabéns{userName ? `, ${userName.split(' ')[0]}` : ''}!
+        </h2>
         <p className="text-black font-bold mb-8 relative z-10 text-xl opacity-90">Você completou seu jejum</p>
 
         {/* Box de Tempo Destacado */}

@@ -241,11 +241,20 @@ const DashboardSession: React.FC<DashboardSessionProps> = ({ history, user, onLo
     <div className="h-full overflow-y-auto pb-24 pt-4 px-4 scroll-smooth bg-white">
       {/* Header with User Profile & Logout */}
       <div className="flex justify-between items-center mb-6">
-          <div>
-            <h2 className="text-2xl font-bold text-brand-lavender-dark">Painel</h2>
-            {user && (
-              <p className="text-sm text-gray-500 font-medium">Olá, {user.name}!</p>
-            )}
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-gray-100 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center">
+               {user?.photo ? (
+                 <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
+               ) : (
+                 <UserCircleIcon className="w-8 h-8 text-gray-300" />
+               )}
+            </div>
+            <div>
+                <h2 className="text-2xl font-bold text-brand-lavender-dark leading-none">Painel</h2>
+                {user && (
+                  <p className="text-sm text-gray-500 font-medium mt-1">Olá, {user.name.split(' ')[0]}!</p>
+                )}
+            </div>
           </div>
           <button 
             onClick={onLogout}
