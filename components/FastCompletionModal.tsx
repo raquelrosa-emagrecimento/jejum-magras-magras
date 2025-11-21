@@ -155,13 +155,13 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
       {/* O container principal é o que será capturado pelo html2canvas */}
       <div 
         ref={cardRef}
-        className="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.2)] relative overflow-hidden animate-pop-in flex flex-col items-center text-center"
+        className="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.2)] relative overflow-hidden animate-pop-in flex flex-col items-center text-center border-2 border-gray-100"
       >
         
-        {/* Background Effects */}
-        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-brand-pink/20 to-transparent rounded-t-[2.5rem] pointer-events-none"></div>
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-lavender/20 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute top-20 -left-10 w-32 h-32 bg-brand-pink/20 rounded-full blur-3xl pointer-events-none"></div>
+        {/* Background Effects - Aumentado opacidade significativamente para contraste */}
+        <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-brand-pink/70 to-transparent rounded-t-[2.5rem] pointer-events-none"></div>
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-lavender/50 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-20 -left-10 w-32 h-32 bg-brand-pink/40 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Icon */}
         <div className="relative mb-6 mt-4 z-10">
@@ -172,15 +172,16 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
             <div className="absolute -top-1 -left-2 text-xl">🎉</div>
         </div>
 
-        <h2 className="text-3xl font-bold text-brand-dark mb-2 relative z-10">Parabéns!</h2>
-        <p className="text-brand-lavender-dark font-medium mb-6 relative z-10">Você completou seu jejum</p>
+        <h2 className="text-3xl font-bold text-gray-800 mb-2 relative z-10">Parabéns!</h2>
+        <p className="text-gray-600 font-medium mb-6 relative z-10">Você completou seu jejum</p>
 
-        <div className="bg-gray-50 rounded-2xl px-8 py-4 mb-6 border border-gray-100 shadow-sm w-full relative z-10">
-            <span className="block text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Tempo Total</span>
-            <span className="text-4xl font-bold text-brand-pink tracking-tight">{durationText}</span>
+        <div className="bg-gray-50 rounded-2xl px-8 py-4 mb-6 border border-gray-200 shadow-sm w-full relative z-10">
+            <span className="block text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Tempo Total</span>
+            {/* Mudado para Lavender Dark para melhor leitura no fundo branco do que o rosa claro */}
+            <span className="text-4xl font-bold text-brand-lavender-dark tracking-tight">{durationText}</span>
         </div>
 
-        <p className="text-gray-600 text-sm leading-relaxed mb-8 px-2 italic relative z-10 min-h-[3rem] flex items-center justify-center">
+        <p className="text-gray-800 text-sm font-medium leading-relaxed mb-8 px-2 italic relative z-10 min-h-[3rem] flex items-center justify-center">
           "{motivationalQuote}"
         </p>
 
