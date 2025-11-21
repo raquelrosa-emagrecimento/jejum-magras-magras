@@ -101,15 +101,27 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
                 return element.classList.contains('share-ignore');
             },
             onclone: (clonedDoc: Document) => {
-                // Torna o rodapé visível APENAS na imagem gerada
+                // Ajustes críticos para evitar corte e melhorar visual na imagem
                 const footer = clonedDoc.querySelector('.share-footer');
-                if (footer) {
-                    const el = footer as HTMLElement;
-                    el.style.height = 'auto';
-                    el.style.opacity = '1';
-                    el.style.transform = 'scale(1)';
-                    el.style.marginTop = '24px';
-                    el.style.display = 'block';
+                const cardContainer = clonedDoc.querySelector('.share-card-container');
+                
+                if (footer && cardContainer) {
+                    const elFooter = footer as HTMLElement;
+                    const elCard = cardContainer as HTMLElement;
+                    
+                    // Torna o rodapé visível
+                    elFooter.style.height = 'auto';
+                    elFooter.style.opacity = '1';
+                    elFooter.style.transform = 'scale(1)';
+                    elFooter.style.marginTop = '30px';
+                    elFooter.style.display = 'block';
+                    elFooter.style.paddingBottom = '10px';
+
+                    // Força o container a crescer e adiciona padding extra no fundo
+                    // para garantir que o rodapé não seja cortado
+                    elCard.style.height = 'auto';
+                    elCard.style.minHeight = 'auto';
+                    elCard.style.paddingBottom = '40px'; 
                 }
             }
         });
@@ -152,43 +164,43 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-in fade-in duration-300">
       
-      {/* O container principal é o que será capturado pelo html2canvas */}
+      {/* O container principal que será capturado. Classe 'share-card-container' usada no onclone */}
       <div 
         ref={cardRef}
-        className="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.2)] relative overflow-hidden animate-pop-in flex flex-col items-center text-center border-2 border-gray-100"
+        className="share-card-container bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.2)] relative overflow-hidden animate-pop-in flex flex-col items-center text-center border-2 border-gray-100"
       >
         
-        {/* Background Effects - Aumentado opacidade significativamente para contraste */}
-        <div className="absolute top-0 left-0 w-full h-48 bg-gradient-to-b from-brand-pink/70 to-transparent rounded-t-[2.5rem] pointer-events-none"></div>
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-lavender/50 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute top-20 -left-10 w-32 h-32 bg-brand-pink/40 rounded-full blur-3xl pointer-events-none"></div>
+        {/* Background Effects - Opacidade aumentada para /80 e /60 para garantir contraste na imagem branca */}
+        <div className="absolute top-0 left-0 w-full h-56 bg-gradient-to-b from-brand-pink/80 to-transparent rounded-t-[2.5rem] pointer-events-none"></div>
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-brand-lavender/60 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-20 -left-10 w-32 h-32 bg-brand-pink/50 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Icon */}
         <div className="relative mb-6 mt-4 z-10">
-            <div className="w-24 h-24 bg-gradient-to-br from-brand-pink to-brand-lavender rounded-full flex items-center justify-center shadow-lg shadow-brand-pink/40 animate-pulse-slow">
+            <div className="w-24 h-24 bg-gradient-to-br from-brand-pink to-brand-lavender rounded-full flex items-center justify-center shadow-lg shadow-brand-pink/40 animate-pulse-slow ring-4 ring-white">
                 <TrophyIcon className="w-12 h-12 text-white" />
             </div>
             <div className="absolute -bottom-2 -right-2 text-2xl">✨</div>
             <div className="absolute -top-1 -left-2 text-xl">🎉</div>
         </div>
 
-        <h2 className="text-3xl font-bold text-gray-800 mb-2 relative z-10">Parabéns!</h2>
-        <p className="text-gray-600 font-medium mb-6 relative z-10">Você completou seu jejum</p>
+        {/* Texto PRETO para máximo contraste */}
+        <h2 className="text-3xl font-bold text-black mb-2 relative z-10 tracking-tight">Parabéns!</h2>
+        <p className="text-gray-700 font-medium mb-6 relative z-10 text-lg">Você completou seu jejum</p>
 
-        <div className="bg-gray-50 rounded-2xl px-8 py-4 mb-6 border border-gray-200 shadow-sm w-full relative z-10">
+        {/* Box de Tempo com fundo mais escuro e texto mais forte */}
+        <div className="bg-gray-100 rounded-2xl px-8 py-5 mb-6 border border-gray-200 shadow-sm w-full relative z-10">
             <span className="block text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Tempo Total</span>
-            {/* Mudado para Lavender Dark para melhor leitura no fundo branco do que o rosa claro */}
-            <span className="text-4xl font-bold text-brand-lavender-dark tracking-tight">{durationText}</span>
+            {/* Cor Roxo Profundo para leitura fácil */}
+            <span className="text-5xl font-bold text-purple-900 tracking-tight">{durationText}</span>
         </div>
 
-        <p className="text-gray-800 text-sm font-medium leading-relaxed mb-8 px-2 italic relative z-10 min-h-[3rem] flex items-center justify-center">
+        {/* Frase Motivacional em Preto Semi-Bold */}
+        <p className="text-black text-base font-semibold leading-relaxed mb-8 px-2 italic relative z-10 min-h-[3rem] flex items-center justify-center">
           "{motivationalQuote}"
         </p>
 
-        {/* 
-           A classe 'share-ignore' é usada na função handleShare para dizer ao html2canvas 
-           para NÃO incluir esta div na imagem gerada. Assim, o print sai limpo.
-        */}
+        {/* Botões (Removidos na imagem) */}
         <div className="flex flex-col gap-3 w-full relative z-10 share-ignore">
             <button 
                 onClick={handleShare}
@@ -213,10 +225,10 @@ const FastCompletionModal: React.FC<FastCompletionModalProps> = ({ fast, onClose
             </button>
         </div>
         
-        {/* Rodapé visível apenas na imagem gerada (controlado via onclone) */}
+        {/* Rodapé oculto por padrão, revelado apenas no onclone */}
         <div className="share-footer h-0 opacity-0 overflow-hidden w-full scale-0">
-             <p className="text-brand-lavender font-bold text-sm text-center">#JejumMagrasMagras</p>
-             <p className="text-[10px] text-gray-400 uppercase font-bold tracking-widest mt-1 text-center">App Jejum Magras Magras</p>
+             <p className="text-brand-lavender-dark font-bold text-lg text-center">#JejumMagrasMagras</p>
+             <p className="text-xs text-gray-500 uppercase font-bold tracking-widest mt-1 text-center">App Jejum Magras Magras</p>
         </div>
 
       </div>
