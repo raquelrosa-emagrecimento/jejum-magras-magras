@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { CompletedFast, DailyLog, User } from '../types';
-import { UserCircleIcon, DropIcon, ScaleIcon, RulerIcon, BoltIcon, ChevronRightIcon, LogoutIcon } from './icons/Icons';
+import { UserCircleIcon, DropIcon, ScaleIcon, RulerIcon, BoltIcon, ChevronRightIcon, LogoutIcon, CameraIcon } from './icons/Icons';
 
 interface DashboardSessionProps {
   history: CompletedFast[];
   user: User | null;
   onLogout: () => void;
+  onUpdateUser: (user: User) => void;
 }
 
 // --- Chart Components ---
@@ -182,7 +183,7 @@ const DashboardChart: React.FC<DashboardChartProps> = ({ title, icon, unit, data
 }
 
 
-const DashboardSession: React.FC<DashboardSessionProps> = ({ history, user, onLogout }) => {
+const DashboardSession: React.FC<DashboardSessionProps> = ({ history, user, onLogout, onUpdateUser }) => {
   const [journalLogs, setJournalLogs] = useState<Record<string, DailyLog>>({});
 
   useEffect(() => {
@@ -191,6 +192,18 @@ const DashboardSession: React.FC<DashboardSessionProps> = ({ history, user, onLo
           setJournalLogs(JSON.parse(savedLogs));
       }
   }, []);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file && user) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+              const newPhoto = reader.result as string;
+              onUpdateUser({ ...user, photo: newPhoto });
+          };
+          reader.readAsDataURL(file);
+      }
+  };
   
   // Stats Calculations
   const totalFasts = history.length;
@@ -242,13 +255,20 @@ const DashboardSession: React.FC<DashboardSessionProps> = ({ history, user, onLo
       {/* Header with User Profile & Logout */}
       <div className="flex justify-between items-center mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-gray-100 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center">
-               {user?.photo ? (
-                 <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
-               ) : (
-                 <UserCircleIcon className="w-8 h-8 text-gray-300" />
-               )}
-            </div>
+            <label className="relative cursor-pointer group">
+                <div className="w-12 h-12 rounded-full bg-gray-100 border-2 border-white shadow-sm overflow-hidden flex items-center justify-center group-hover:brightness-90 transition-all">
+                    {user?.photo ? (
+                        <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
+                    ) : (
+                        <UserCircleIcon className="w-8 h-8 text-gray-300" />
+                    )}
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 rounded-full">
+                    <CameraIcon className="w-5 h-5 text-white" />
+                </div>
+                <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
+            </label>
+            
             <div>
                 <h2 className="text-2xl font-bold text-brand-lavender-dark leading-none">Painel</h2>
                 {user && (

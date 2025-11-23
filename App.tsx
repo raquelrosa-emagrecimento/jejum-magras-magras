@@ -7,12 +7,13 @@ import PlanSelector from './components/PlanSelector';
 import MetabolicStatus from './components/MetabolicStatus';
 import TimelineGuide from './components/TimelineGuide';
 import JournalSession from './components/JournalSession';
+import MealSession from './components/MealSession';
 import DashboardSession from './components/DashboardSession';
 import FastCompletionModal from './components/FastCompletionModal';
 import AuthScreen from './components/AuthScreen';
-import { PlayIcon, StopIcon, HomeIcon, XMarkIcon, ChevronRightIcon, JournalIcon, UserCircleIcon } from './components/icons/Icons';
+import { PlayIcon, StopIcon, HomeIcon, XMarkIcon, ChevronRightIcon, JournalIcon, UserCircleIcon, UtensilsIcon } from './components/icons/Icons';
 
-type Tab = 'timer' | 'journal' | 'dashboard';
+type Tab = 'timer' | 'journal' | 'meals' | 'dashboard';
 
 const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -58,6 +59,11 @@ const App: React.FC = () => {
   const handleLogout = () => {
     setUser(null);
     localStorage.removeItem('userProfile');
+  };
+
+  const handleUpdateUser = (updatedUser: User) => {
+    setUser(updatedUser);
+    localStorage.setItem('userProfile', JSON.stringify(updatedUser));
   };
 
   // Timer logic
@@ -196,8 +202,17 @@ const App: React.FC = () => {
         );
       case 'journal':
         return <JournalSession />;
+      case 'meals':
+        return <MealSession />;
       case 'dashboard':
-        return <DashboardSession history={history} user={user} onLogout={handleLogout} />;
+        return (
+          <DashboardSession 
+            history={history} 
+            user={user} 
+            onLogout={handleLogout} 
+            onUpdateUser={handleUpdateUser}
+          />
+        );
     }
   };
 
@@ -258,11 +273,11 @@ const App: React.FC = () => {
       </main>
 
       {/* Bottom Navigation Bar */}
-      <nav className="fixed bottom-0 w-full bg-white border-t border-gray-50 pb-safe pt-3 px-4 shadow-[0_-4px_25px_rgba(200,180,227,0.15)] z-40 h-24 rounded-t-3xl">
-        <div className="flex justify-between items-center h-full pb-4 max-w-sm mx-auto px-4">
+      <nav className="fixed bottom-0 w-full bg-white border-t border-gray-50 pb-safe pt-3 px-2 shadow-[0_-4px_25px_rgba(200,180,227,0.15)] z-40 h-24 rounded-t-3xl">
+        <div className="flex justify-between items-center h-full pb-4 max-w-sm mx-auto px-2">
           <button 
             onClick={() => setActiveTab('timer')}
-            className={`flex flex-col items-center gap-1 p-2 transition-colors w-16 ${activeTab === 'timer' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+            className={`flex flex-col items-center gap-1 p-2 transition-colors w-14 ${activeTab === 'timer' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
           >
             <HomeIcon className={`w-7 h-7 ${activeTab === 'timer' ? 'fill-brand-lavender/20 stroke-brand-lavender-dark' : 'stroke-current'}`} />
             <span className="text-[10px] font-bold">Início</span>
@@ -270,15 +285,23 @@ const App: React.FC = () => {
 
           <button 
             onClick={() => setActiveTab('journal')}
-            className={`flex flex-col items-center gap-1 p-2 transition-colors w-16 ${activeTab === 'journal' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+            className={`flex flex-col items-center gap-1 p-2 transition-colors w-14 ${activeTab === 'journal' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
           >
              <JournalIcon className={`w-7 h-7 ${activeTab === 'journal' ? 'fill-brand-lavender/20 stroke-brand-lavender-dark' : 'stroke-current'}`} />
              <span className="text-[10px] font-bold">Diário</span>
           </button>
 
           <button 
+            onClick={() => setActiveTab('meals')}
+            className={`flex flex-col items-center gap-1 p-2 transition-colors w-14 ${activeTab === 'meals' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+          >
+             <UtensilsIcon className={`w-7 h-7 ${activeTab === 'meals' ? 'fill-brand-lavender/20 stroke-brand-lavender-dark' : 'stroke-current'}`} />
+             <span className="text-[10px] font-bold">Refeições</span>
+          </button>
+
+          <button 
             onClick={() => setActiveTab('dashboard')}
-            className={`flex flex-col items-center gap-1 p-2 transition-colors w-16 ${activeTab === 'dashboard' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
+            className={`flex flex-col items-center gap-1 p-2 transition-colors w-14 ${activeTab === 'dashboard' ? 'text-brand-lavender-dark' : 'text-gray-300 hover:text-brand-lavender'}`}
           >
             <UserCircleIcon className={`w-7 h-7 ${activeTab === 'dashboard' ? 'fill-brand-lavender/20 stroke-brand-lavender-dark' : 'stroke-current'}`} />
             <span className="text-[10px] font-bold">Painel</span>

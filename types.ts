@@ -40,6 +40,14 @@ export interface Electrolytes {
   magnesium?: number;
 }
 
+export interface MealEntry {
+  id: string;
+  name: string; // ex: Café da manhã, Almoço
+  description: string; // ex: Ovos com bacon
+  calories: number;
+  time: string; // HH:mm
+}
+
 export interface DailyLog {
   date: string; // YYYY-MM-DD format
   waterIntake?: number; // in ml or glasses
@@ -47,6 +55,7 @@ export interface DailyLog {
   measurements?: BodyMeasurements;
   bloodLevels?: BloodLevels;
   electrolytes?: Electrolytes;
+  meals?: MealEntry[];
 }
 
 export interface User {

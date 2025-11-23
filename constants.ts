@@ -78,3 +78,83 @@ export const MOTIVATIONAL_QUOTES: string[] = [
   "Seu corpo agradece cada momento de descanso digestivo.",
   "Magra, saudável e feliz: esse é o seu destino traçado."
 ];
+
+export const BREAK_FAST_MENU = [
+  {
+    day: "Segunda-Feira",
+    title: "Cuscuz com ovo",
+    emoji: "🍳",
+    items: [
+      "Cuscuz: 3 colheres (sopa)",
+      "Ovos: 2 unidades (mexidos ou cozidos)",
+      "Fruta: ½ banana",
+      "Café: 1 xícara, sem açúcar"
+    ]
+  },
+  {
+    day: "Terça-Feira",
+    title: "Iogurte leve",
+    emoji: "🥣",
+    items: [
+      "Iogurte natural: 170g (1 pote)",
+      "Aveia: 1 colher (sopa)",
+      "Chia: 1 colher (chá)",
+      "Fruta: 1 maçã pequena",
+      "Café ou chá: 1 xícara"
+    ]
+  },
+  {
+    day: "Quarta-Feira",
+    title: "Café rápido",
+    emoji: "🥪",
+    items: [
+      "Pão francês: 1 unidade sem miolo",
+      "Ovo: 1 unidade mexido",
+      "Queijo coalho (opção): 1 fatia pequena (30g)",
+      "Fruta: 1 maçã pequena"
+    ]
+  },
+  {
+    day: "Quinta-Feira",
+    title: "Tapioca + proteína",
+    emoji: "🍽",
+    items: [
+      "Tapioca: 2 colheres (sopa) cheias (aprox. 70g pronta)",
+      "Recheio: 1 ovo ou 2 colheres (sopa) de frango desfiado",
+      "Fruta cítrica: 1 mexerica média"
+    ]
+  },
+  {
+    day: "Sexta-Feira",
+    title: "Omelete nutritivo",
+    emoji: "🥗",
+    items: [
+      "Ovos: 2 unidades",
+      "Tomate: 2 colheres (sopa) picado",
+      "Orégano: a gosto",
+      "Fruta: ½ mamão papaia"
+    ]
+  },
+  {
+    day: "Sábado",
+    title: "Vitamina reforçada",
+    emoji: "🥛",
+    items: [
+      "Banana: 1 unidade pequena",
+      "Aveia: 1 colher (sopa)",
+      "Leite desnatado ou vegetal: 200ml",
+      "Ovo cozido (opcional para segurar fome): 1 unidade"
+    ]
+  },
+  {
+    day: "Domingo",
+    title: "Cuscuz completo",
+    emoji: "🍲",
+    items: [
+      "Cuscuz: 3 colheres (sopa)",
+      "Ovo: 1 a 2 unidades",
+      "Queijo branco (opcional): 1 fatia fina (25g)",
+      "Fruta: 1 fatia de melão ou ½ banana"
+    ]
+  }
+];
